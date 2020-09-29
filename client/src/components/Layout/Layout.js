@@ -1,46 +1,56 @@
 import React from "react";
 import { Grid, Paper, Container, Box } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import Header from "./Header";
-import ListItems from './ListItems';
+import ListItems from "./ListItems";
+
+const useStyles = makeStyles((theme) => ({
+  grid: {
+    width: "100%",
+    margin: "0px",
+  },
+}));
 
 const Layout = () => {
+  const classes = useStyles();
+
   const Panel = () => {
     return (
       <Container>
         <Paper>
-          <Grid container justify="space-between">
-            <Grid item>
-              <Grid container>
-                <Grid item>
-                  <Box p={2}>ss</Box>
-                </Grid>
-                <Grid item>
-                  <Box p={2}>ss</Box>
+          <div className={classes.root}>
+            <Grid container justify="space-between">
+              <Grid item>
+                <Grid container>
+                  <Grid item>
+                    <Box p={2}>ss</Box>
+                  </Grid>
+                  <Grid item>
+                    <Box p={2}>ss</Box>
+                  </Grid>
                 </Grid>
               </Grid>
+              <Grid item>
+                <Box p={2}>sssuavsua</Box>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Box p={2}>sssuavsua</Box></Grid>
-          </Grid>
+          </div>
         </Paper>
       </Container>
     );
   };
 
-
-
   return (
-    <Grid container spacing={3} direction="column">
-      <Grid item>
-        <Header />
+    <div>
+      <Header />
+      <Grid container spacing={5} direction="column" className={classes.grid}>
+        <Grid item>
+          <Panel />
+        </Grid>
+        
       </Grid>
-      <Grid item>
-        <Panel />
-      </Grid>
-      <Grid item>
-        <ListItems />
-      </Grid>
-    </Grid>
+      <ListItems />
+    </div>
   );
 };
 
