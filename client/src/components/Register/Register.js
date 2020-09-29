@@ -46,7 +46,7 @@ const Register = () => {
         history.push("/dashboard");
       })
       .catch((error) => {
-        debugger;
+        console.error('error', error)
         setErrorMessage(error.message);
         setTimeout(() => setErrorMessage(""), 2000);
       });

@@ -39,7 +39,7 @@ const Headers = () => {
       history.push("/");
     })
     .catch(error => {
-      debugger
+      console.error('error', error)
     })
   }
 

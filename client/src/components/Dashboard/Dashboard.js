@@ -60,12 +60,11 @@ const Dashboard = () => {
         setInstancesList(instances);
       })
       .catch((error) => {
-        debugger;
+        console.error('error', error)
       });
   };
 
   const parentFunction = ({ type, data }) => {
-    debugger;
     switch (type) {
       case "START_STOP_INSTANCE":
         updateInstance({ ...data }).then((resp) => {

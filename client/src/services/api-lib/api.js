@@ -25,7 +25,7 @@ export const api = {
           return resolve(resp);
         })
         .catch((error) => {
-          debugger;
+          console.error('error', error)
           reject(error);
         });
     });
@@ -49,7 +49,7 @@ export const api = {
           if(!resp.success) return reject(resp);
         })
         .catch((error) => {
-          debugger
+          console.error('error', error)
           reject(error);
         });
     });
