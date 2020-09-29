@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ListItems from "./ListItems";
 import Panel from "./Panel";
 
-import { instances } from "../../services/instances";
+import { instances, updateInstance } from "../../services/instances";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -26,7 +26,7 @@ const Dashboard = () => {
 
   const getPriceObj = (price = 0) => {
     return {
-      usd: price,
+      usd: price.toFixed(2),
       inr: (price / 0.015).toFixed(2)
     }
   }
@@ -57,6 +57,20 @@ const Dashboard = () => {
       });
   };
 
+  const parentFunction = ({type, action}) => {
+    debugger
+    switch(type){
+      case 'START_STOP_INSTANCE':
+        updateInstance({ ...action })
+        .then(resp => {
+          listInstances();
+        })
+      default:
+        console.log('Unknown action type')
+    }
+    
+  }
+
   useEffect(() => {
     listInstances();
   }, []);
@@ -69,7 +83,7 @@ const Dashboard = () => {
           <Panel stopperInstancePrice={stopperInstancePrice}  runningInstancePrice={runningInstancePrice}/>
         </Grid>
       </Grid>
-      <ListItems instancesList={instancesList} />
+      <ListItems parentFunction={parentFunction} instancesList={instancesList} />
     </div>
   );
 };

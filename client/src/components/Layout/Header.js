@@ -37,7 +37,6 @@ const Headers = () => {
     .then(resp => {
       localStorage.clear()
       history.push("/");
-      debugger
     })
     .catch(error => {
       debugger

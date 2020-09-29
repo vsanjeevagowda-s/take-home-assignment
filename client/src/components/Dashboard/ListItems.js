@@ -57,7 +57,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const ListItems = ({ instancesList = [] }) => {
+const ListItems = ({ instancesList = [], parentFunction=()=>{} }) => {
   const classes = useStyles();
 
   const instanceAction = (status = "stopped") => {
@@ -77,7 +77,11 @@ const ListItems = ({ instancesList = [] }) => {
     }
   };
 
-  console.log("instancesList ===", instancesList);
+  const getNextStatus = (status) => {
+    if(status === 'stopped') return 'start';
+    return 'stop'
+  }
+
   return (
     <Container maxWidth="lg">
       <Paper>
@@ -100,7 +104,13 @@ const ListItems = ({ instancesList = [] }) => {
                   <TableCell className={classes.bodyCells} align="right">{row.name}</TableCell>
                   <TableCell className={classes.bodyCells} align="right">{row.costPerHour}</TableCell>
                   <TableCell className={classes.bodyCells} align="right">{row.status}</TableCell>
-                  <TableCell className={classes.bodyCells} align="right">
+                  <TableCell onClick={() => parentFunction({
+                    type: 'START_STOP_INSTANCE',
+                    action: {  
+                      nextStatus: getNextStatus(row.status),
+                      id: row.id
+                    }
+                  })} className={classes.bodyCells} align="right">
                     {instanceAction(row.status)}
                   </TableCell>
                 </StyledTableRow>
