@@ -67,13 +67,13 @@ const Dashboard = () => {
   const parentFunction = ({ type, data }) => {
     switch (type) {
       case "START_STOP_INSTANCE":
-        updateInstance({ ...data }).then((resp) => {
+        return updateInstance({ ...data }).then((resp) => {
           listInstances();
         });
       case "UPDATE_AND_SHOW_PRICE_TYPE":
-        setPriceType(data.type);
+        return setPriceType(data.type);
       default:
-        console.log("Unknown action type");
+        return console.log("Unknown action type");
     }
   };
 
