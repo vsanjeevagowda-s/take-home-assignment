@@ -47,7 +47,6 @@ const Layout = () => {
         <Grid item>
           <Panel />
         </Grid>
-        
       </Grid>
       <ListItems />
     </div>
