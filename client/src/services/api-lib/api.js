@@ -21,7 +21,7 @@ export const api = {
       })
         .then((resp) => resp.json())
         .then((resp) => {
-          debugger;
+          
           return resolve(resp);
         })
         .catch((error) => {
@@ -40,11 +40,11 @@ export const api = {
       return fetch(`${ROOT_API_URL}${path}`, payload)
         .then((resp) => {
 					const authorization = resp.headers.get('authorization');
-          if(authorization) localStorage.setItem('token', authorization)
+          if(authorization) localStorage.setItem('token', `Bearer ${authorization}`)
           return resp.json();
         })
         .then((resp) => {
-          debugger
+          
           if(resp.success) return resolve(resp);
           if(!resp.success) return reject(resp);
         })

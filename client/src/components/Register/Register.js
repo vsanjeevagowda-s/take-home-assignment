@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   Box,
   Button,
@@ -32,15 +32,19 @@ const useStyles = makeStyles((theme) => ({
 
 const Register = () => {
   const classes = useStyles();
+  const history = useHistory();
+
   const [email, setEmail] = useState("user@gmail.com");
   const [password, setPassword] = useState("StrongPassword123");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    debugger;
+    
     register({ email, password })
-      .then((resp) => {})
+      .then((resp) => {
+        history.push("/dashboard");
+      })
       .catch((error) => {
         debugger;
         setErrorMessage(error.message);
