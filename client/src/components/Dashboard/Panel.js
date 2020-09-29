@@ -69,17 +69,14 @@ const CustomSwitch = withStyles((theme) => ({
   );
 });
 
-const Panel = ({ stopperInstancePrice = {}, runningInstancePrice = {} }) => {
+const Panel = ({ stopperInstancePrice = {}, runningInstancePrice = {}, priceType='usd', parentFunction=()=>{} }) => {
   const classes = useStyles();
-  const [priceType, setPriceType] = useState("usd");
 
   const handleChange = (event) => {
-    debugger;
-    if (event.target.checked) {
-      setPriceType("usd");
-    } else {
-      setPriceType("inr");
-    }
+    parentFunction({
+      type: 'UPDATE_AND_SHOW_PRICE_TYPE',
+      data: { type: event.target.checked ? "usd": "inr" }
+    })
   };
 
   const getIconToDisplay = (price) => {

@@ -15,6 +15,7 @@ import {
   Link,
 } from "@material-ui/core";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import Icon from "@material-ui/core/Icon";
 
 const TABLE_ROWS = ["ID", "Instance Name", "Cost Per Hour", "Status", "Action"];
 
@@ -57,10 +58,11 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const ListItems = ({ instancesList = [], parentFunction=()=>{} }) => {
+const ListItems = ({ instancesList = [], parentFunction=()=>{}, priceType='usd' }) => {
+
   const classes = useStyles();
 
-  const instanceAction = (status = "stopped") => {
+  const getInstanceActionToShow = (status = "stopped") => {
     const preventDefault = (event) => event.preventDefault();
     if (status == "stopped") {
       return (
@@ -82,6 +84,22 @@ const ListItems = ({ instancesList = [], parentFunction=()=>{} }) => {
     return 'stop'
   }
 
+  const getIconToDisplay = (price) => {
+    if (price === "usd") {
+      return (
+        <Icon>
+          <img src="/images/doller.svg" />
+        </Icon>
+      );
+    } else {
+      return (
+        <Icon>
+          <img src="/images/rupee.svg" />
+        </Icon>
+      );
+    }
+  };
+
   return (
     <Container maxWidth="lg">
       <Paper>
@@ -102,16 +120,16 @@ const ListItems = ({ instancesList = [], parentFunction=()=>{} }) => {
                     {row.id}
                   </TableCell>
                   <TableCell className={classes.bodyCells} align="right">{row.name}</TableCell>
-                  <TableCell className={classes.bodyCells} align="right">{row.costPerHour}</TableCell>
+              <TableCell className={classes.bodyCells} align="right">{getIconToDisplay(priceType)}{row.costPerHour[priceType]}</TableCell>
                   <TableCell className={classes.bodyCells} align="right">{row.status}</TableCell>
                   <TableCell onClick={() => parentFunction({
                     type: 'START_STOP_INSTANCE',
-                    action: {  
+                    data: {  
                       nextStatus: getNextStatus(row.status),
                       id: row.id
                     }
                   })} className={classes.bodyCells} align="right">
-                    {instanceAction(row.status)}
+                    {getInstanceActionToShow(row.status)}
                   </TableCell>
                 </StyledTableRow>
               ))}

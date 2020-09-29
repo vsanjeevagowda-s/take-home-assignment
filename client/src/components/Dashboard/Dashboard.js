@@ -16,30 +16,37 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = () => {
   const classes = useStyles();
   const [instancesList, setInstancesList] = useState([]);
+  const [priceType, setPriceType] = useState("usd");
+
   const initialPriceObj = {
     usd: 0,
     inr: 0,
   };
 
-  const [stopperInstancePrice, setStopperInstancePrice] = useState(initialPriceObj);
-  const [runningInstancePrice, setRunningInstancePrice] = useState(initialPriceObj);
+  const [stopperInstancePrice, setStopperInstancePrice] = useState(
+    initialPriceObj
+  );
+  const [runningInstancePrice, setRunningInstancePrice] = useState(
+    initialPriceObj
+  );
 
   const getPriceObj = (price = 0) => {
     return {
       usd: price.toFixed(2),
-      inr: (price / 0.015).toFixed(2)
-    }
-  }
+      inr: (price / 0.015).toFixed(2),
+    };
+  };
 
-  const updatePanelData = (instances = []) => {
+  const updateInstancesAndPanelData = (instances = []) => {
     let stopperInstancePrice = 0;
     let runningInstancePrice = 0;
-    instances.forEach((element) => {
+    const newInstances = instances.map((element) => {
       if (element.status === "stopped") {
         stopperInstancePrice += element.costPerHour;
       } else {
         runningInstancePrice += element.costPerHour;
       }
+      return element.costPerHour = getPriceObj(element.costPerHour)
     });
     setStopperInstancePrice(getPriceObj(stopperInstancePrice));
     setRunningInstancePrice(getPriceObj(runningInstancePrice));
@@ -49,7 +56,7 @@ const Dashboard = () => {
     instances()
       .then((resp) => {
         const instances = resp?.instances ? resp.instances : [];
-        updatePanelData(instances)
+        updateInstancesAndPanelData(instances);
         setInstancesList(instances);
       })
       .catch((error) => {
@@ -57,33 +64,41 @@ const Dashboard = () => {
       });
   };
 
-  const parentFunction = ({type, action}) => {
-    debugger
-    switch(type){
-      case 'START_STOP_INSTANCE':
-        updateInstance({ ...action })
-        .then(resp => {
+  const parentFunction = ({ type, data }) => {
+    debugger;
+    switch (type) {
+      case "START_STOP_INSTANCE":
+        updateInstance({ ...data }).then((resp) => {
           listInstances();
-        })
+        });
+      case "UPDATE_AND_SHOW_PRICE_TYPE":
+        setPriceType(data.type);
       default:
-        console.log('Unknown action type')
+        console.log("Unknown action type");
     }
-    
-  }
+  };
 
   useEffect(() => {
     listInstances();
   }, []);
 
-  console.log("instancesList", instancesList);
   return (
     <div>
       <Grid container spacing={5} direction="column" className={classes.grid}>
         <Grid item>
-          <Panel stopperInstancePrice={stopperInstancePrice}  runningInstancePrice={runningInstancePrice}/>
+          <Panel
+            stopperInstancePrice={stopperInstancePrice}
+            priceType={priceType}
+            runningInstancePrice={runningInstancePrice}
+            parentFunction={parentFunction}
+          />
         </Grid>
       </Grid>
-      <ListItems parentFunction={parentFunction} instancesList={instancesList} />
+      <ListItems
+        parentFunction={parentFunction}
+        instancesList={instancesList}
+        priceType={priceType}
+      />
     </div>
   );
 };
