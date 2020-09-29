@@ -6,13 +6,25 @@ import Register from "./Register/Register";
 import Login from "./Login/Login";
 import Layout from "./Layout/Layout";
 
-function App() {
+
+const PrivateRoute = ({ component: Component, token, ...rest }) => {
+  return <Route exact {...rest} render={(props) => {
+    if (localStorage.getItem('token')) {
+      return <Component {...props} />
+    } else {
+      return <Redirect to='/' />
+    }
+  }
+  } />
+}
+
+const App =() => {
   return (
     <HashRouter>
       <Switch>
         <Route exact path="/" component={Login} />
         <Route exact path="/register" component={Register} />
-        <Route exact path="/dashboard" component={Layout} />
+        <PrivateRoute exact path="/dashboard" component={Layout} />
       </Switch>
     </HashRouter>
   );
