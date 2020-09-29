@@ -9,6 +9,8 @@ import {
   Grid,
   Container,
 } from "@material-ui/core";
+import { logout } from '../../services/user';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +29,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Headers = () => {
+  const history = useHistory();
   const classes = useStyles();
+
+  const logoutUser = () => {
+    logout()
+    .then(resp => {
+      localStorage.clear()
+      history.push("/");
+      debugger
+    })
+    .catch(error => {
+      debugger
+    })
+  }
 
   return (
     <div className={classes.root}>
@@ -40,7 +55,7 @@ const Headers = () => {
               </Typography>
             </Grid>
             <Grid item>
-              <Button color="inherit">logout</Button>
+              <Button color="inherit" onClick={() => logoutUser()}>logout</Button>
             </Grid>
           </Grid>
         </Container>

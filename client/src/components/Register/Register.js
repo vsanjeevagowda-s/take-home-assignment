@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
-import { register } from "../../services/register";
+import { register } from "../../services/user";
 
 const useStyles = makeStyles((theme) => ({
   root: {
