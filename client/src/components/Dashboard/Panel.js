@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Grid,
   Paper,
@@ -83,13 +83,13 @@ const Panel = ({ stopperInstancePrice = {}, runningInstancePrice = {}, priceType
     if (price === "usd") {
       return (
         <Icon>
-          <img src="/images/doller.svg" />
+          <img src="/images/doller.svg" alt="dollar" />
         </Icon>
       );
     } else {
       return (
         <Icon>
-          <img src="/images/rupee.svg" />
+          <img src="/images/rupee.svg" alt="rupee" />
         </Icon>
       );
     }

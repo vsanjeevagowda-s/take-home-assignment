@@ -1,17 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 
 import {
   Container,
   Paper,
-  Typography,
   Box,
   Table,
   TableHead,
   TableRow,
   TableBody,
   TableCell,
-  Grid,
-  TableContainer,
   Link,
 } from "@material-ui/core";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
@@ -64,7 +61,7 @@ const ListItems = ({ instancesList = [], parentFunction=()=>{}, priceType='usd' 
 
   const getInstanceActionToShow = (status = "stopped") => {
     const preventDefault = (event) => event.preventDefault();
-    if (status == "stopped") {
+    if (status === "stopped") {
       return (
         <Link href="#" className={classes.startLink} onClick={preventDefault}>
           Start
@@ -88,13 +85,13 @@ const ListItems = ({ instancesList = [], parentFunction=()=>{}, priceType='usd' 
     if (price === "usd") {
       return (
         <Icon>
-          <img src="/images/doller.svg" />
+          <img src="/images/doller.svg" alt="dollar" />
         </Icon>
       );
     } else {
       return (
         <Icon>
-          <img src="/images/rupee.svg" />
+          <img src="/images/rupee.svg" alt="rupee"  />
         </Icon>
       );
     }
