@@ -1,64 +1,61 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
-import { act } from 'react-dom/test-utils';
-import { HashRouter, Switch } from "react-router-dom";
-import Register from "../../../components/Register/Register";
+import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
+import Login from "../../../components/Login/Login";
 
 
-jest.mock("../../../services/user");
-import { register } from '../../../services/user';
+jest.mock("../../../services/user.js");
+import { login as loginServiceFn } from '../../../services/user';
 
 const Component = (
   <HashRouter>
     <Switch>
-    <Register />
+    <Login />
     </Switch>
   </HashRouter>
 )
 
-describe('register', () => {
+describe('login', () => {
 
-  beforeAll(() => {
-    register.mockImplementation(()=>{
-      return new Promise((resolve, reject) =>{
-        reject('test')
-      })
-  })
-  })
-
-  test("renders register component", () => {
+  test("renders login component", () => {
     const { getByText } = render(Component);
-    const linkElement = getByText(/Sign Up/i);
+    const linkElement = getByText(/Sign In/i);
     expect(linkElement).toBeInTheDocument();
   });
 
   test("renders email field", () => {
     const { getByTestId } = render(Component);
-    const ele = getByTestId('register-email')
+    const ele = getByTestId('login-email')
     fireEvent.change(ele, { target: { value: 'a@gmail.com' } })
     expect(ele.value).toBe('a@gmail.com')
   });
 
   test("renders password field", () => {
     const { getByTestId } = render(Component);
-    const ele = getByTestId('register-password')
+    const ele = getByTestId('login-password')
     fireEvent.change(ele, { target: { value: '123' } })
     expect(ele.value).toBe('123')
   });
 
   test("should login with valid email / password", () => {
+
+    loginServiceFn.mockImplementation(()=>{
+      return new Promise((resolve, reject) =>{
+        resolve({
+          message: "Logged in successfully!",
+          success: true
+        })
+      })
+  })
     
-    const { getByText, getByTestId, debug, asFragment } = render(Component);
-    const login = getByTestId('register-button')
-    const email = getByTestId('register-email')
-    const password = getByTestId('register-password')
+    const { getByText, getByTestId, debug } = render(Component);
+    const login = getByTestId('login-button')
+    const email = getByTestId('login-email')
+    const password = getByTestId('login-password')
     fireEvent.change(email, { target: { value: 'user@gmail.com' } })
     fireEvent.change(password, { target: { value: 'password' } })
+    debug();
+    fireEvent.click(login);
     // debug();
-    // act(() => {
-      fireEvent.click(login);
-    // });
-    expect(asFragment()).toMatchSnapshot();
-    // debug(asFragment());
   });
 });
