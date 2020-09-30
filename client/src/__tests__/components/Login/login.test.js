@@ -2,7 +2,7 @@ import React from "react";
 import { render, fireEvent, waitForElement } from "@testing-library/react";
 import userEvent  from "@testing-library/user-event";
 import { screen } from '@testing-library/dom'
-import { HashRouter, BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
 import Login from "../../../components/Login/Login";
 
 

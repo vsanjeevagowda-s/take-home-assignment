@@ -82,7 +82,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div>
+    <div data-testid="dashboard-wrapper">
       <Grid container spacing={5} direction="column" className={classes.grid}>
         <Grid item>
           <Panel

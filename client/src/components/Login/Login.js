@@ -43,12 +43,11 @@ const Login = () => {
 
     login({ email, password })
       .then((resp) => {
-        console.log('===>Inside login then<===', resp)
-        console.log('===>history<===', history)
+
         history.push("/dashboard");
       })
       .catch((error) => {
-        console.log('===>Inside login error<===', error);
+
         setErrorMessage(error.message);
         setTimeout(() => setErrorMessage(""), 2000);
       });
