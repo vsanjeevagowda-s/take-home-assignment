@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Paper, Container, Box } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ListItems from "./ListItems";
 import Panel from "./Panel";
@@ -46,8 +46,11 @@ const Dashboard = () => {
       } else {
         runningInstancePrice += element.costPerHour;
       }
-      return element.costPerHour = getPriceObj(element.costPerHour)
+      const newElement = Object.assign({}, element)
+      newElement.costPerHour = getPriceObj(newElement.costPerHour)
+      return newElement;
     });
+    setInstancesList(newInstances)
     setStopperInstancePrice(getPriceObj(stopperInstancePrice));
     setRunningInstancePrice(getPriceObj(runningInstancePrice));
   };
@@ -57,7 +60,6 @@ const Dashboard = () => {
       .then((resp) => {
         const instances = resp?.instances ? resp.instances : [];
         updateInstancesAndPanelData(instances);
-        setInstancesList(instances);
       })
       .catch((error) => {
         console.error('error', error)
