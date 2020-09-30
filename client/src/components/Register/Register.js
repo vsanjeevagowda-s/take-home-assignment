@@ -102,7 +102,7 @@ const Register = () => {
             </FormControl>
           </FormGroup>
           <Box mt={2}>
-            <Button className={classes.button} type="submit" fullWidth>
+            <Button data-testid="register-button" className={classes.button} type="submit" fullWidth>
               Create an account
             </Button>
           </Box>

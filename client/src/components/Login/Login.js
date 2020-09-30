@@ -105,7 +105,7 @@ const Login = () => {
             </FormControl>
           </FormGroup>
           <Box mt={2}>
-            <Button className={classes.button} type="submit" fullWidth>
+            <Button data-testid="login-button" className={classes.button} type="submit" fullWidth>
               Login
             </Button>
           </Box>
