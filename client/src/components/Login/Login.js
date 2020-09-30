@@ -36,7 +36,7 @@ const Login = () => {
 
   const [email, setEmail] = useState("user@gmail.com");
   const [password, setPassword] = useState("StrongPassword123");
-  const [errorMessage, setErrorMessage] = useState("sample");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -44,10 +44,11 @@ const Login = () => {
     login({ email, password })
       .then((resp) => {
         console.log('===>Inside login then<===', resp)
+        console.log('===>history<===', history)
         history.push("/dashboard");
       })
       .catch((error) => {
-        console.log('===>Inside login error<===');
+        console.log('===>Inside login error<===', error);
         setErrorMessage(error.message);
         setTimeout(() => setErrorMessage(""), 2000);
       });

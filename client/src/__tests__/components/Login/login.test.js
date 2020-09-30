@@ -1,6 +1,8 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
-import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
+import { render, fireEvent, waitForElement } from "@testing-library/react";
+import userEvent  from "@testing-library/user-event";
+import { screen } from '@testing-library/dom'
+import { HashRouter, BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import Login from "../../../components/Login/Login";
 
 
@@ -37,13 +39,38 @@ describe('login', () => {
     expect(ele.value).toBe('123')
   });
 
-  test("should login with valid email / password", () => {
+  // test("should login with valid email / password", async () => {
+
+  //   loginServiceFn.mockImplementation(()=>{
+  //     return new Promise((resolve, reject) =>{
+  //       resolve({
+  //         message: "Logged in successfully!",
+  //         success: true
+  //       })
+  //     })
+  // })
+  //   window.history.pushState({}, 'Test page', '/')
+  //   const { getByText, getByTestId, debug } = render(<Login />, {wrapper: BrowserRouter});
+  //   const login = getByTestId('login-button')
+  //   const email = getByTestId('login-email')
+  //   const password = getByTestId('login-password')
+  //   fireEvent.change(email, { target: { value: 'user@gmail.com' } })
+  //   fireEvent.change(password, { target: { value: 'password' } })
+  //   // debug();
+  //   userEvent.click(login);
+  //   // debug();
+  //   const logoutButtonElement = await waitForElement(()=> screen.getByTestId(/logout-button/i));
+  //   debug(logoutButtonElement);
+  //   expect(logoutButtonElement).toBeInTheDocument()
+  // });
+
+  test("should show error with invalid credentials", async () => {
 
     loginServiceFn.mockImplementation(()=>{
       return new Promise((resolve, reject) =>{
-        resolve({
-          message: "Logged in successfully!",
-          success: true
+        reject({
+          message: "Unauthorized",
+          success: false
         })
       })
   })
@@ -54,8 +81,12 @@ describe('login', () => {
     const password = getByTestId('login-password')
     fireEvent.change(email, { target: { value: 'user@gmail.com' } })
     fireEvent.change(password, { target: { value: 'password' } })
-    debug();
+    // debug();
     fireEvent.click(login);
     // debug();
+    await waitForElement(()=> getByTestId(/error-message/i));
+    const errorMessage = getByText(/Unauthorized/i)
+    // debug(errorMessage);
+    expect(errorMessage).toBeInTheDocument()
   });
 });

@@ -54,7 +54,7 @@ const Headers = () => {
               </Typography>
             </Grid>
             <Grid item>
-              <Button color="inherit" onClick={() => logoutUser()}>logout</Button>
+              <Button data-testid="logout-button" color="inherit" onClick={() => logoutUser()}>logout</Button>
             </Grid>
           </Grid>
         </Container>
