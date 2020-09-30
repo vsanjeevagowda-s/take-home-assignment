@@ -7,7 +7,8 @@ import {
   TextField,
   FormLabel,
   FormGroup,
-  Typography
+  Typography,
+  Grid,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
@@ -40,80 +41,90 @@ const Register = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+
     register({ email, password })
       .then((resp) => {
         history.push("/dashboard");
       })
       .catch((error) => {
-        console.error('error', error)
+        console.error("error", error);
         setErrorMessage(error.message);
         setTimeout(() => setErrorMessage(""), 2000);
       });
   };
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      bgcolor="inherit"
+    <Grid
+      container
+      justify="center"
       alignItems="center"
       className={classes.formWrapper}
     >
-      <Box p={4} bgcolor="#FFFFFF" width="40%" borderRadius={16}>
-        <Box p={2} display="flex" justifyContent="center">
-        <Typography variant="h5">Sign Up</Typography>
-        </Box>
+      <Grid item xs={12} sm={6} lg={4} md={6}>
+        <Box p={4} bgcolor="#FFFFFF" width="inherit" borderRadius={16}>
+          <Box p={2} display="flex" justifyContent="center">
+            <Typography variant="h5">Sign Up</Typography>
+          </Box>
 
-        {errorMessage && (
+          {errorMessage && (
+            <Box display="flex" justifyContent="center">
+              <Alert severity="error">{errorMessage}</Alert>
+            </Box>
+          )}
+          <form
+            className={classes.root}
+            noValidate
+            autoComplete="off"
+            onSubmit={handleSubmit}
+          >
+            <FormGroup>
+              <FormControl>
+                <FormLabel>
+                  <Box p={1}>Email</Box>
+                </FormLabel>
+                <TextField
+                  inputProps={{ "data-testid": "register-email" }}
+                  type="text"
+                  variant="outlined"
+                  onChange={(event) => setEmail(event.target.value)}
+                  value={email}
+                />
+              </FormControl>
+            </FormGroup>
+            <FormGroup>
+              <FormControl>
+                <FormLabel>
+                  <Box p={1}>Password</Box>
+                </FormLabel>
+                <TextField
+                  inputProps={{ "data-testid": "register-password" }}
+                  name="password"
+                  type="password"
+                  variant="outlined"
+                  onChange={(event) => setPassword(event.target.value)}
+                  value={password}
+                />
+              </FormControl>
+            </FormGroup>
+            <Box mt={2}>
+              <Button
+                data-testid="register-button"
+                className={classes.button}
+                type="submit"
+                fullWidth
+              >
+                Create an account
+              </Button>
+            </Box>
+          </form>
           <Box display="flex" justifyContent="center">
-            <Alert severity="error">{errorMessage}</Alert>
+            <Link to="/" className={classes.link}>
+              Have an account already? Login here
+            </Link>
           </Box>
-        )}
-        <form
-          className={classes.root}
-          noValidate
-          autoComplete="off"
-          onSubmit={handleSubmit}
-        >
-          <FormGroup>
-            <FormControl>
-              <FormLabel><Box p={1}>Email</Box></FormLabel>
-              <TextField
-                inputProps={{ "data-testid": "register-email" }}
-                type="text"
-                variant="outlined"
-                onChange={(event) => setEmail(event.target.value)}
-                value={email}
-              />
-            </FormControl>
-          </FormGroup>
-          <FormGroup>
-            <FormControl>
-              <FormLabel><Box p={1}>Password</Box></FormLabel>
-              <TextField
-                inputProps={{ "data-testid": "register-password" }}
-                name="password"
-                type="password"
-                variant="outlined"
-                onChange={(event) => setPassword(event.target.value)}
-                value={password}
-              />
-            </FormControl>
-          </FormGroup>
-          <Box mt={2}>
-            <Button data-testid="register-button" className={classes.button} type="submit" fullWidth>
-              Create an account
-            </Button>
-          </Box>
-        </form>
-        <Box display="flex" justifyContent="center">
-          <Link to="/" className={classes.link}>
-            Have an account already? Login here
-          </Link>
         </Box>
-      </Box>
-    </Box>
+      </Grid>
+    </Grid>
   );
 };
 

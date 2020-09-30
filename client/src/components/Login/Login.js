@@ -8,6 +8,7 @@ import {
   FormLabel,
   FormGroup,
   Typography,
+  Grid,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
@@ -43,82 +44,88 @@ const Login = () => {
 
     login({ email, password })
       .then((resp) => {
-
         history.push("/dashboard");
       })
       .catch((error) => {
-
         setErrorMessage(error.message);
         setTimeout(() => setErrorMessage(""), 2000);
       });
   };
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
+    <Grid
+      container
+      justify="center"
       alignItems="center"
-      bgcolor="inherit"
       className={classes.formWrapper}
     >
-      <Box p={4} bgcolor="#FFFFFF" width="40%" borderRadius={16}>
-        <Box p={2} display="flex" justifyContent="center">
-          <Typography variant="h5">Sign In</Typography>
-        </Box>
+      <Grid item xs={12} sm={6} lg={4} md={6}>
+        <Box p={4} bgcolor="#FFFFFF" width="inherit" borderRadius={16}>
+          <Box p={2} display="flex" justifyContent="center">
+            <Typography variant="h5">Sign In</Typography>
+          </Box>
 
-        {errorMessage && (
+          {errorMessage && (
+            <Box display="flex" justifyContent="center">
+              <Alert data-testid="error-message" severity="error">
+                {errorMessage}
+              </Alert>
+            </Box>
+          )}
+          <form
+            className={classes.root}
+            noValidate
+            autoComplete="off"
+            onSubmit={handleSubmit}
+          >
+            <FormGroup>
+              <FormControl>
+                <FormLabel>
+                  <Box p={1}>Email</Box>
+                </FormLabel>
+                <TextField
+                  inputProps={{ "data-testid": "login-email" }}
+                  type="text"
+                  variant="outlined"
+                  onChange={(event) => setEmail(event.target.value)}
+                  value={email}
+                />
+              </FormControl>
+            </FormGroup>
+            <FormGroup>
+              <FormControl>
+                <FormLabel>
+                  <Box p={1}>Password</Box>
+                </FormLabel>
+                <TextField
+                  inputProps={{ "data-testid": "login-password" }}
+                  name="password"
+                  type="password"
+                  variant="outlined"
+                  onChange={(event) => setPassword(event.target.value)}
+                  value={password}
+                />
+              </FormControl>
+            </FormGroup>
+            <Box mt={2}>
+              <Button
+                data-testid="login-button"
+                className={classes.button}
+                type="submit"
+                fullWidth
+              >
+                Login
+              </Button>
+            </Box>
+          </form>
           <Box display="flex" justifyContent="center">
-            <Alert data-testid="error-message" severity="error">{errorMessage}</Alert>
+            <Link to="/register" className={classes.link}>
+              Create an account
+            </Link>
           </Box>
-        )}
-        <form
-          className={classes.root}
-          noValidate
-          autoComplete="off"
-          onSubmit={handleSubmit}
-        >
-          <FormGroup>
-            <FormControl>
-              <FormLabel>
-                <Box p={1}>Email</Box>
-              </FormLabel>
-              <TextField
-                inputProps={{ "data-testid": "login-email" }}
-                type="text"
-                variant="outlined"
-                onChange={(event) => setEmail(event.target.value)}
-                value={email}
-              />
-            </FormControl>
-          </FormGroup>
-          <FormGroup>
-            <FormControl>
-              <FormLabel>
-                <Box p={1}>Password</Box>
-              </FormLabel>
-              <TextField
-                inputProps={{ "data-testid": "login-password" }}
-                name="password"
-                type="password"
-                variant="outlined"
-                onChange={(event) => setPassword(event.target.value)}
-                value={password}
-              />
-            </FormControl>
-          </FormGroup>
-          <Box mt={2}>
-            <Button data-testid="login-button" className={classes.button} type="submit" fullWidth>
-              Login
-            </Button>
-          </Box>
-        </form>
-        <Box display="flex" justifyContent="center">
-          <Link to="/register" className={classes.link}>
-            Create an account
-          </Link>
         </Box>
-      </Box>
-    </Box>
+      </Grid>
+    </Grid>
   );
 };
 
